@@ -1,3 +1,9 @@
+'''
+HITwh102 Course Selection System
+author: lllfq  idfqxyfy
+update: 2018.4.29
+'''
+
 #!/usr/bin/env python3
 
 from flask import Flask, views, request, redirect, url_for, Response, render_template, json, jsonify
@@ -174,15 +180,15 @@ def user_login(no, password=None, psw_hash=None):
         elif len(str(no)) == 9:
             data.update({'identify': 'student'})
             user = db.session.query(Student).filter_by(no=no).first()
-        if not user:  # 检查用户是否存在 若否，返回用户不存在
+        if not user:                                       # 检查用户是否存在 若否，返回用户不存在
             data.update({'result': 'unexist'})
         if user:
             psw_check = psw_hash == user.psw_hash or user.check_password(password)
-            if not psw_check:  # 检查密码是否匹配 若否，返回密码错误
+            if not psw_check:                              # 检查密码是否匹配 若否，返回密码错误
                 data.update({'result': 'wrong'})
-            elif not user.confirmed:  # 检查用户是否已激活 若否，返回待激活
+            elif not user.confirmed:                       # 检查用户是否已激活 若否，返回待激活
                 data.update({'result': 'wait'})
-            else:  # 通过上述检查，返回登录成功
+            else:                                          # 通过上述检查，返回登录成功
                 data.update({'result': 'success', 'user_id': user.id, 'psw_hash': user.psw_hash})
     return data
 
@@ -398,10 +404,10 @@ class SignupView(views.MethodView):
         email = request.form.get('email')
         password = request.form.get('password')
         no1 = str(no)[0:7]
-        if no1 == TEACHER_SIGNUP_KEY:  # 检查学号栏前7位是否为教师注册密钥 若是，注册目标为教师
+        if no1 == TEACHER_SIGNUP_KEY:    # 检查学号栏前7位是否为教师注册密钥 若是，注册目标为教师
             no2 = int(str(no)[7:9])
             tea = db.session.query(Teacher).filter_by(no=no2).first()
-            if not tea:  # 检查是否存在该学号的教师 若否，注册教师，返回待激活
+            if not tea:                  # 检查是否存在该学号的教师 若否，注册教师，返回待激活
                 teacher = Teacher(no=no2, name=name, email=email)
                 teacher.set_password(password=password)
                 db.session.add(teacher)
@@ -409,7 +415,7 @@ class SignupView(views.MethodView):
                 token = teacher.generate_confirmation_token().decode('utf-8')
                 send_email('确认注册', email.split(), 'email/confirm', user_name=name, email=email, token=token)
                 return jsonify(result='wait')
-            elif not tea.confirmed:  # 检查已存在的教师是否已激活 若否，覆盖注册信息，返回已覆盖
+            elif not tea.confirmed:      # 检查已存在的教师是否已激活 若否，覆盖注册信息，返回已覆盖
                 tea.name = name
                 tea.email = email
                 tea.set_password(password=password)
@@ -417,11 +423,11 @@ class SignupView(views.MethodView):
                 token = tea.generate_confirmation_token().decode('utf-8')
                 send_email('确认注册', email.split(), 'email/confirm', user_name=name, email=email, token=token)
                 return jsonify(result='cover')
-            else:  # 存在已激活的该学号教师 返回已存在
+            else:                        # 存在已激活的该学号教师 返回已存在
                 return jsonify(result='exist')
-        else:  # 学号栏前7位不是教师注册密钥，注册目标为学生
+        else:                            # 学号栏前7位不是教师注册密钥，注册目标为学生
             stu = db.session.query(Student).filter_by(no=no).first()
-            if not stu:  # 检查是否存在该学号的学生 若否，注册学生，返回待激活
+            if not stu:                  # 检查是否存在该学号的学生 若否，注册学生，返回待激活
                 student = Student(no=no, name=name, email=email)
                 student.set_password(password=password)
                 db.session.add(student)
@@ -429,7 +435,7 @@ class SignupView(views.MethodView):
                 token = student.generate_confirmation_token().decode('utf-8')
                 send_email('确认注册', email.split(), 'email/confirm', user_name=name, email=email, token=token)
                 return jsonify(result='wait')
-            elif not stu.confirmed:  # 检查已存在的学生是否已激活 若否，覆盖注册信息，返回已覆盖
+            elif not stu.confirmed:      # 检查已存在的学生是否已激活 若否，覆盖注册信息，返回已覆盖
                 stu.name = name
                 stu.email = email
                 stu.set_password(password=password)
@@ -437,7 +443,7 @@ class SignupView(views.MethodView):
                 token = stu.generate_confirmation_token().decode('utf-8')
                 send_email('确认注册', email.split(), 'email/confirm', user_name=name, email=email, token=token)
                 return jsonify(result='cover')
-            else:  # 存在已激活的该学号学生 返回已存在
+            else:                        # 存在已激活的该学号学生 返回已存在
                 return jsonify(result='exist')
 
 
@@ -460,7 +466,7 @@ class StudentView(views.MethodView):
                 }
         return jsonify(data)
 
-    def get(self):  # 渲染模板
+    def get(self):                       # 渲染模板
         identify = request.cookies.get('identify')
         if identify == 'student':
             return render_template('student.html')
@@ -469,10 +475,10 @@ class StudentView(views.MethodView):
 
     def post(self):
         type = request.form.get('type')  # 判断功能
-        if type == 'get':  # 显示课程
+        if type == 'get':                # 显示课程
             return self.__show_lessons()
 
-        elif type == 'select':  # 选课
+        elif type == 'select':           # 选课
             student_id = request.cookies.get('user_id')
             lesson_id = request.form.get('lesson_id')
 
@@ -494,13 +500,13 @@ class StudentView(views.MethodView):
             #         db.session.commit()
             return self.__show_lessons()
 
-        elif type == 'unselect':  # 取消选课
+        elif type == 'unselect':        # 取消选课
             student_id = request.cookies.get('user_id')
             lesson_id = request.form.get('lesson_id')
 
             stu = db.session.query(Student).filter_by(id=student_id).first()
             les = db.session.query(Lesson).filter_by(id=lesson_id).first()
-            if date.today() < les.start_time.date():  # 取消选课条件：日期为至少前一天
+            if date.today() < les.start_time.date():            # 取消选课条件：日期为至少前一天
                 stu.lessons.remove(les)
             db.session.commit()
             return self.__show_lessons()
@@ -525,7 +531,7 @@ class TeacherView(views.MethodView):
                 }
         return jsonify(data)
 
-    def get(self):  # 渲染模板
+    def get(self):                      # 渲染模板
         identify = request.cookies.get('identify')
         if identify == 'teacher':
             return render_template('teacher.html')
@@ -533,11 +539,11 @@ class TeacherView(views.MethodView):
             return redirect(url_for('error', e='no_authority'))
 
     def post(self):
-        type = request.form.get('type')  # 判断功能
-        if type == 'get':  # 显示课程列表
+        type = request.form.get('type') # 判断功能
+        if type == 'get':               # 显示课程列表
             return self.__show_lessons()
 
-        elif type == 'add':  # 创建课程系
+        elif type == 'add':             # 创建课程系
             teacher_id = request.cookies.get('user_id')
             classname = request.form.get('classname')
             classroom = request.form.get('classroom')
@@ -563,7 +569,7 @@ class TeacherView(views.MethodView):
                            lesson_time=no1_les.start_time, stu_num=stu_num, operator=tea.name)
             return self.__show_lessons()
 
-        elif type == 'delete':  # 删除课程
+        elif type == 'delete':          # 删除课程
             teacher_id = request.cookies.get('user_id')
             lesson_id = request.form.get('lesson_id')
 
@@ -577,7 +583,7 @@ class TeacherView(views.MethodView):
             db.session.commit()
             return self.__show_lessons()
 
-        elif type == 'change':  # 修改课程时间
+        elif type == 'change':          # 修改课程时间
             teacher_id = request.cookies.get('user_id')
             lesson_id = request.form.get('lesson_id')
             new_time = to_datetime(request.form.get('new_time'))
