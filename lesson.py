@@ -1,6 +1,6 @@
 '''
 HITwh102 Course Selection System
-author: lllfq  idfqxyfy
+author: lllfq idfqxyfy
 update: 2018.4.29
 '''
 
