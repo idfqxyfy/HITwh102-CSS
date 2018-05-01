@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>光电科学系实验选课系统</title>
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/teacher.css">
+    <link rel="shortcut icon" href="../static/image/icon.ico">
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="nav-bar">
+        <div id="date"></div>
+        <div id="nav">
+            <div id="cookie"></div>
+            <div>
+                <a href="#"></a>
+                <a  href="{{ url_for("login") }}" id="logout"><i class="fa fa-sign-out"></i>注销</a>
+            </div>
+        </div>
+    </div>
+    <div id="board">
+        <div id="warning">
+            <div id="decrationbar"></div>
+            <p class="text"></p>
+            <p><button>确定</button></p>
+        </div>
+    </div>
+    <div id="container">
+        <div id="sidebar">
+            <a href="#mylesson"><i class="fa fa-navicon"></i> 我的实验</a>
+            <a href="#alllesson"><i class="fa fa-navicon"></i> 全部实验</a>
+            <a href="#form"><i class="fa fa-pencil"></i> 添加实验</a>
+            <a href="#nav-bar"><i class="fa fa-arrow-up"></i> 返回顶部</a>
+        </div>
+        <form id="mylesson" class="table">
+            <fieldset>
+                <legend>我的实验</legend>
+                <table v-if="myexperiments.length > 0" >
+                    <thead>
+                        <tr>
+                            <th>实验序号</th>
+                            <th>实验名称</th>
+                            <th>实验地点</th>
+                            <th>实验人数</th>
+                            <th>实验时间</th>
+                            <th>教师姓名</th>
+                            <th>联系方式</th>
+                            <th>操作方式</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for="(myexperiment,index) in myexperiments">
+                        <tr v-if="will_change != myexperiment">
+                                <td>{[index+1]}</td>
+                                <td>{[ myexperiment.classname ]}</td>
+                                <td>{[ myexperiment.classroom]}</td>
+                                <td>{[ myexperiment.students.length || "0" ]}/{[myexperiment.stu_num]}</td>
+                                <td>{[ myexperiment.start_time ]}</td>
+                                <td>{[ myexperiment.teacher.name ]}</td>
+                                <td>{[ myexperiment.tel ]}</td>
+                                <td><a href="#" v-on:click="push_to_change(myexperiment)" >修改</a><a href="#" v-on:click="del(myexperiment)" >删除</a></td>
+                        </tr>
+                        <tr v-else>
+                            <td>{[index+1]}</td>
+                            <td>{[ myexperiment.classname ]}</td>
+                            <td>{[ myexperiment.classroom]}</td>
+                            <td>{[ myexperiment.students.length || "0" ]}/{[myexperiment.stu_num]}</td>
+                            <td>
+                                 <label>第<select v-model="new_time[0]">
+                                       <option>10</option>
+                                       <option>11</option>
+                                       <option>12</option>
+                                       <option>13</option>
+                                       <option>14</option>
+                                       <option>15</option>
+                                       <option>16</option>
+                                       <option>17</option>
+                                       <option>18</option>
+                                       <option>19</option>
+                                       <option>20</option>
+                                   </select>周,</label>
+                                   <label>星期 <select v-model="new_time[1]">
+                                       <option>一</option>
+                                       <option>二</option>
+                                       <option>三</option>
+                                       <option>四</option>
+                                       <option>五</option>
+                                       <option>六</option>
+                                       <option>日</option>
+                                   </select>,</label>
+                                   <label><input style="max-length:150px" type="time"  v-model="new_time[2]"></label>
+                            </td>
+                            <td>{[ myexperiment.teacher.name ]}</td>
+                            <td>{[ myexperiment.tel ]}</td>
+                            <td><a href="#" v-on:click="change" >确认</a><a href="#" class="cancel" v-on:click="cancel" >取消</a></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-else style="font-size: 30px">您尚未添加课程！</div>
+            </fieldset>
+        </form>
+        <form id="alllesson" class="table">
+            <fieldset>
+                <legend>全部实验</legend>
+                <table v-if="allexperiments.length > 0">
+                    <thead>
+                        <tr>
+                            <th>实验序号</th>
+                            <th>实验名称</th>
+                            <th>实验地点</th>
+                            <th>实验人数</th>
+                            <th>实验时间</th>
+                            <th>教师姓名</th>
+                            <th>联系方式</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(allexperiment,index) in allexperiments">
+                            <td>{[index+1]}</td>
+                            <td>{[ allexperiment.classname ]}</td>
+                            <td>{[ allexperiment.classroom]}</td>
+                            <td>{[ allexperiment.students.length || "0" ]}/{[allexperiment.stu_num]}</td>
+                            <td>{[ allexperiment.start_time ]}</td>
+                            <td>{[ allexperiment.teacher.name ]}</td>
+                            <td>{[ allexperiment.tel ]}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div v-else style="font-size: 30px">现在尚未添加实验！</div>
+            </fieldset>
+        </form>
+        <form id="form">
+            <fieldset>
+                <legend>添加实验</legend>
+                <div>
+                <label><span style="color: red">*</span>实验名称：<input type="text" v-model="classname"></label>
+                </div>
+                <div>
+                    <label><span style="color: red">*</span>实验地点：<input type="text" v-model="classroom"></label>
+                </div>
+                <div>
+                    <label><span style="color:red">*</span>联系方式：<input type="text" placeholder="手机/固话" v-model="telnumber"></label>
+                </div>
+                <div>
+                    <label><span style="color: red">*</span>年级人数：<input type="text" v-model="allnumber" v-on:change="numberChange">
+                    </label>
+                </div>
+                <div>
+                    <label><span style="color: red">*</span>每次实验人数：
+                        <select id="number" v-model="number" v-on:change="numberChange">
+                            <option disabled value="">请选择</option>
+                            <option>2</option>
+                            <option>4</option>
+                            <option>6</option>
+                            <option>8</option>
+                            <option>12</option>
+                            <option>16</option>
+                        </select>
+                    </label>
+                </div>
+                <div style="font-size:30px;margin: 10px">
+                    时间
+                </div>
+                <div>
+                   <div v-for="(item, index) in time" style="margin: 5px">
+                       <span style="color: red">*</span>
+                       第{[index+1]}次实验时间 ----
+                       <label>第 <select v-model="time[index].week">
+                           <option>8</option>
+                           <option>9</option>
+                           <option>10</option>
+                           <option>11</option>
+                           <option>12</option>
+                           <option>13</option>
+                           <option>14</option>
+                           <option>15</option>
+                           <option>16</option>
+                           <option>17</option>
+                           <option>18</option>
+                       </select> 周</label>
+                       <label>星期 <select v-model="time[index].day">
+                           <option>一</option>
+                           <option>二</option>
+                           <option>三</option>
+                           <option>四</option>
+                           <option>五</option>
+                           <option>六</option>
+                           <option>日</option>
+                       </select></label>
+                       <label>具体时间 <input type="time"  v-model="time[index].time"></label>
+                   </div>
+                </div>
+                <p><input type="submit" value="添加新实验" v-on:click="submit"></p>
+            </fieldset>
+        </form>
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="../static/js/teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+#container{
+    z-index: 9998;
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-flow: row;
+    width: 100%;
+    height: 100%;
+    padding-top: 40px;
+    background-color: rgba(67, 108, 184, 0.4);   
+}
+.btn{
+    z-index: 9999;
+    display: block;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 70px;
+    width: 50px;
+    border: none;
+    font-size: 50px;
+    color: rgba(34, 34, 34,0.6);
+    background-color: rgba(10, 51, 117, 0.4);
+    text-align: center;
+}
+.btn:hover{
+    cursor: pointer;
+}
+#showpre{
+    left: 0;
+}
+#shownext{
+    right:0;
+}
+#sidebar{
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    opacity: 0;
+    transition: 2s;
+    transition-timing-function: ease-out;
+}
+#sidebar p{
+    font-size: 50px;
+}
+#sidebar img{
+    display: inline-block;
+}
+#loginform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 500px;
+    font-weight: bold;
+}
+#loginform fieldset{
+    position: relative;
+    width: 400px; 
+    border: 3px solid white;
+    border-radius: 5px;
+    background-color: inherit; 
+}
+#loginform legend{
+    font-size: 50px;
+}
+#loginform form{
+    opacity: 0;
+    transform: translateY(100px);
+    transition: 1s;
+    transition-timing-function: ease-out;
+}
+#loginform p{
+    margin-top: 30px;
+    font-size: 20px;
+    text-align: center;
+}
+#loginform p:nth-of-type(1){
+    margin-bottom: 0;
+}
+#loginform p:nth-of-type(2){
+    margin-top:10px;
+    margin-bottom: 50px;
+}
+#loginform p span{
+    color: red;
+}
+#loginform a{
+    text-decoration: none;
+    color: #ff0000;
+}
+#submit{
+    margin-bottom: -15px;
+    width: 80%;
+    height: 50px;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    background-color: #267fdd;
+
+}
+.input{
+    padding-left: 15px;
+    box-sizing: content-box;
+    height: 40px;
+    line-height: 40px;
+    background-color: rgba(246, 249, 255, 0.5);  
+    border:none;
+    border-radius: 7px;
+}

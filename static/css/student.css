@@ -1,0 +1,157 @@
+*{
+    box-sizing: border-box;
+    font-size: 16px;
+    font-family: sans-serif;
+}
+html,body{
+    position: relative;
+    height: 100%;
+    color: white;
+}
+#nav-bar{
+    z-index: 9998;
+    top: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    height: 50px;
+    width: 100%;
+    line-height: 50px;
+    background-color: #148FDD;
+    color: white;
+}
+#nav-bar a{
+    display: inline-block;
+    padding-right: 5px;
+    padding-left: 5px;
+    text-decoration: none;
+    color: white;
+    transition: 1s;
+}
+#nav a:hover{
+    text-decoration: underline;
+}
+#nav div{
+    display: inline-block;
+}
+#cookie{
+    margin-right: 30px;
+}
+#board{
+    position: fixed;
+    top: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(255,255,255,0.5);
+    opacity: 0;
+}
+#warning{
+    width: 300px;
+    height: 200px;
+    position: absolute;
+    top: 50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+    padding: 30px;
+    background-color: white;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4),0 -1px 1px rgba(0,0,0,0.4);
+}
+#decrationbar{
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 45px;
+    border-radius: 8px 8px 0 0;
+    background-color: #148FDD;
+}
+#warning .text{
+    margin-top: 50px;
+    color: #000;
+    opacity: 0.7;
+    font-size: 23px;
+    font-weight: bold;
+}
+#warning button{
+    height: 40px;
+    width: 100px;
+    border: none;
+    border-radius: 4px;
+    color:white;
+    font-weight: 300;
+    background-color: #148FDD;
+}
+#container{
+    width: 1040px;
+    margin:0 auto 0 auto;
+    padding: 0 30px 30px 30px;
+    box-shadow: 2px 0 5px #959595,-2px 0 5px #959595;
+    background-color: white;
+    color: black;
+}
+form{
+    position: relative;
+    font-weight: bolder;
+    color: #3D3D3D;
+}
+legend{
+    margin-left: 50px;
+    color: #535353;
+    font-size: 40px;
+}
+fieldset{
+    border:3px solid gray;
+    text-align: center;
+}
+.table fieldset{
+    padding:30px 10px 30px 10px;
+}
+table{
+    border-collapse: collapse;
+    margin: 0 auto;
+}
+td,
+th
+{
+    font-size: 16px;
+    line-height: 30px;
+    border: gray solid 2px;
+    padding: 5px;
+    word-break: keep-all;
+    white-space:nowrap;
+}
+tbody td:nth-last-child{
+    padding: 2px 3px;
+}
+button{
+    display: inline-block;
+    height: 25px;
+    width: 60px;
+    line-height: 25px;
+    background-color: #ff4238;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    font-weight: normal;
+}
+#alllesson td,
+#alllesson th{
+    min-width:150px ;
+    max-width: 150px;
+    overflow: hidden;
+}
+
+.slidedown{
+    animation: slidedown 2s;
+}
+@keyframes slidedown {
+    from { opacity: 0}
+    to {
+           opacity: 1;
+    }
+}

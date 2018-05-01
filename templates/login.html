@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>光电科学系实验选课系统</title>
+    <link rel="stylesheet" href="../static/css/normalize.css">
+    <link rel="stylesheet" href="../static/css/main.css">
+    <link rel="stylesheet" href="../static/css/login.css">
+    <link rel="shortcut icon" href="../static/image/icon.ico">
+</head>
+<body>
+    <div id="warning">
+        <div id="decrationbar"></div>
+        <p class="text"></p>
+        <p><button>确定</button></p>
+    </div>
+    <div id="background">
+        <button id="showpre" class="btn" @click="showpre"><</button>
+        <button id="shownext" class="btn" @click="shownext">></button>
+        <ul>
+            <li>
+                <img :src="preimg">
+            </li>
+            <li v-show='imgs[0]=="../static/image/background1.jpg"'>
+                <img src="../static/image/background1.jpg">
+            </li>
+            <li  v-show='imgs[0]=="../static/image/background2.jpg"'>
+                <img src="../static/image/background2.jpg">
+            </li>
+            <li  v-show='imgs[0]=="../static/image/background3.jpg"'>
+                <img src="../static/image/background3.jpg">
+            </li>
+            <li  v-show='imgs[0]=="../static/image/background4.jpg"'>
+                <img src="../static/image/background4.jpg">
+            </li>
+            <li>
+                <img :src="nextimg">
+            </li>
+        </ul>
+    </div>
+    <div id="nav-bar">
+        <div id="date"></div>
+        <div id="nav">
+            <a href="http://www.hitwh.edu.cn/sitemap.asp">站点地图</a>
+            <a href="http://www.hitwh.edu.cn/">哈工大（威海）</a>
+            <a href="{{ url_for("signup") }}">注册</a>
+        </div>
+    </div>
+    <div id="container">
+        <div id="sidebar">
+            <div id="brand">
+                <img src="../static/image/brand.png" alt="hitbrand">
+            <p>光电信息科学与工程<br>物理实验选课系统</p>
+            </div>
+        </div>
+        <div id="loginform">
+            <form action="" method="POST">
+                <fieldset>
+                    <legend>登录</legend>
+                    <p>
+                        学号：
+                        <input type="text" class="input" placeholder="请输入您的学号" v-model="username" v-on:blur="checkusername">
+                        <br v-bind:class="{hidden:!nameerror}"><span  v-bind:class="{hidden:!nameerror}">您的账号格式有误！</span>                       
+                    </p>
+                    <p>
+                        密码：
+                        <input id="password" type="password"  class="input" placeholder="请输入您的密码" v-model="password" v-on:blur="checkpassword">
+                        <br  v-bind:class="{hidden:!pswderror}"><span  v-bind:class="{hidden:!pswderror}">您的密码格式有误！</span>
+                    </p>
+                    <p><button id="submit" type="submit" v-bind:disabled="error" v-bind:style="style" v-on:click="submit">登录</button></p>
+                    <p><a href="{{ url_for("signup") }}">没有账号？注册</a></p>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div id="footer">
+        注意：本站暂时只支持PC端EDGE,Firefox,Chrome，旧版浏览器可能出现问题，请及时更新！
+    </div>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+    <script src="../static/js/login.js"></script>
+</body>
+</html>
